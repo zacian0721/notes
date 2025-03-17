@@ -1,0 +1,13 @@
+import math
+def f1(n,a,x):
+    int i
+    float p=a[0]
+    for i in range(n):
+        p +=(a[i]*pow(x,i))
+n=int(input())
+x=float(input())
+b[]
+for i in range(n):
+    b.append(float(input()))
+result=f1(n,b[],x)
+print(result)
