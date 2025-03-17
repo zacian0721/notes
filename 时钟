@@ -1,0 +1,30 @@
+import time
+import math
+MAXN= 10
+#clock_t start,stop
+def f1(n,a,x):
+    p=a[0]
+    for i in range(n):
+        p += (a[i] * pow(x, i))
+    return p
+def f2(n,a,x):
+    p=a[n]
+    for i in range(n,1):
+        p = a[i - 1] + x * p;
+    return p
+a=[float(i) for i in range(MAXN)]
+#float a[MAXN]
+#for i in range(MAXN):
+    #a[i]=(float)i
+start = time.perf_counter()  # 使用 time.perf_counter() 替代 clock()
+f1(MAXN-1,a,1.1)
+stop = time.perf_counter()#更改stop=clock()
+duration=(float)(stop-start)
+print((float)(stop-start))
+print(duration)
+start = time.perf_counter()#更改start = clock()
+f2(MAXN-1,a,1.1)
+stop = time.perf_counter()#更改stop=clock()
+duration=(float)(stop-start)
+print((float)(stop-start))
+print(duration)
