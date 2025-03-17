@@ -1,6 +1,6 @@
 import time
 import math
-MAXN= 10
+MAXN= 10  #直接替换define MAXN
 #clock_t start,stop
 def f1(n,a,x):
     p=a[0]
