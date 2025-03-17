@@ -1,0 +1,11 @@
+def MaxSubeqSum1(a,N):
+    ThisSum,MaxSum=0,0
+    for i in range(N):
+        for j in range(i,N-1):
+            ThisSum=0
+            for k in range(i,j):
+                ThisSum +=A[k]
+            if(ThisSum>MaxSum):
+                MaxSum = ThisSum
+    return MaxSum
+#T(N)=O(N^3)
