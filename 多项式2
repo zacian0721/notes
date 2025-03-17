@@ -1,0 +1,12 @@
+def f2(n,a,x):
+    p=a[n]
+    for i in range(n,1):
+        p=a[i-1]+x*p   #f(x) = a0+ x(a1+x(...(an-1 + x(an))...))
+n=int(input())
+
+x=float(input())
+a=[]   #初始化数组，记得加等号
+for j in range(n):
+    a.append(float(input))   #append逐个输入
+result= f2(n,a,x)
+print(result)
