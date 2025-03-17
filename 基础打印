@@ -1,0 +1,15 @@
+def PrintN_1(N):
+    for i in range(N):
+        print(i)
+n1=int(input())
+PrintN_1(n1)
+循环实现基础打印
+
+
+def PrintN(N):
+    if(N):
+        PrintN(N-1)
+        print(N)
+n=int(input())
+PrintN(n)
+递归实现
