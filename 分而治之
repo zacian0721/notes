@@ -1,0 +1,36 @@
+def Max3(A,B,C):
+    return max(A,B,C)         #可替代c语言中繁琐的A > B ? A > C ? A : C : B > C ? B : C比较
+def DivideAndConquer(List,left,right):
+    if left == right:
+        if List[left] > 0:
+            #print("List[left]=%d\n",List[left])
+            return List[left]
+        else:
+            return 0
+    #print("left=%d\n",left)
+    #print("right=%d\n",right)
+    center = (left + right)/2
+    #print("center=%d\n",center)
+    MaxLeftSum=DivideAndConquer(List,left,center)
+    #print("MaxLeftSum=%d\n",MaxLeftSum)
+    MaxRightSum=DivideAndConquer(List,center+1,right)
+    #print("MaxRightSum=%d\n",MaxRightSum)
+    MaxLeftBorderSum=0
+    LeftBorderSum=0
+    for i in range(center,left-1):
+        LeftBorderSum += List[i]
+        if LeftBorderSum > MaxLeftBorderSum:
+            MaxLeftBorderSum = LeftBorderSum
+            #print("MaxLeftBorderSum=%d\n", MaxLeftBorderSum)
+    MaxRightBorderSum=0
+    RightBorderSum=0
+    for i in range(center+1,right+1):
+        MaxRightBorderSum += List[i]
+        if RightBorderSum > MaxRightBorderSum:
+            MaxRightBorderSum = RightBorderSum;
+            #print("MaxRightBorderSum=%d\n", MaxRightBorderSum)
+    Max = Max3(MaxLeftSum,MaxRightSum,MaxLeftBorderSum + MaxRightBorderSum)
+    #print("Max=%d\n",Max)
+    return Max
+def MaxSubseqSum3(List,N):
+    return DivideAndConquer( List, 0, N-1 )
