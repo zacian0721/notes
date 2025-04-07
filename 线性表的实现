@@ -1,0 +1,7 @@
+class LNode:
+    def __init__(self,maxsize):
+        self.Data = [None]*maxsize
+        self.Last=-1
+MAXSIZE=100
+L=LNode(MAXSIZE)
+Ptrl=L
