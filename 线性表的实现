@@ -1,7 +1,27 @@
 class LNode:
-    def __init__(self,maxsize):
-        self.Data = [None]*maxsize
-        self.Last=-1
-MAXSIZE=100
-L=LNode(MAXSIZE)
-Ptrl=L
+    def __init__(self, maxsize=100):
+        self.Data = [None] * maxsize
+        self.Last = -1
+
+    def insert(self, value, position):
+        """在指定位置插入元素（position 从 1 开始计数）"""
+        if self.Last == len(self.Data) - 1:
+            raise ValueError("表已满")
+        if position < 1 or position > self.Last + 2:
+            raise ValueError("位置非法")
+        # 从后向前移动元素
+        for i in range(self.Last, position - 2, -1):
+            self.Data[i + 1] = self.Data[i]
+        self.Data[position - 1] = value
+        self.Last += 1
+
+def MakeEmpty():
+    return LNode()
+
+# 使用示例
+PtrL = MakeEmpty()
+PtrL.insert(10, 1)  # 在位置 1 插入 10
+PtrL.insert(20, 2)  # 在位置 2 插入 20
+
+print("表数据:", PtrL.Data[:PtrL.Last + 1])  # 输出: [10, 20]
+print("当前 Last:", PtrL.Last)              # 输出: 1
