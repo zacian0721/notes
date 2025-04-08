@@ -2,7 +2,7 @@ class LNode:
     def __init__(self, maxsize=100):
         self.Data = [None] * maxsize
         self.Last = -1
-
+    #插入
     def insert(self, value, position):
         """在指定位置插入元素（position 从 1 开始计数）"""
         if self.Last == len(self.Data) - 1:
@@ -14,7 +14,41 @@ class LNode:
             self.Data[i + 1] = self.Data[i]
         self.Data[position - 1] = value
         self.Last += 1
-
+    #查找
+    def find(X, PtrL):
+    """在顺序表中查找元素 X
+    参数:
+        X: 要查找的元素
+        PtrL: LNode 类的实例（顺序表）
+    返回:
+        找到则返回索引位置（从0开始），未找到返回-1
+    """
+    i = 0
+    while i <= PtrL.Last and PtrL.Data[i] != X:
+        i += 1
+    if i > PtrL.Last:
+        return -1  # 未找到
+    else:
+        return i  # 返回找到的位置（从0开始）
+    #删除
+    def delete(i, PtrL):
+    """删除顺序表中第i个元素
+    参数:
+        i: 要删除的位置（从1开始计数）
+        PtrL: LNode 类的实例（顺序表）
+    """
+    # 检查空表及删除位置的合法性
+    if i < 1 or i > PtrL.Last + 1:
+        print(f"不存在第{i}个元素")
+        return
+    
+    # 将第i+1到最后的元素顺序前移
+    for j in range(i, PtrL.Last + 1):
+        PtrL.Data[j-1] = PtrL.Data[j]
+    
+    PtrL.Last -= 1  # 更新最后一个元素的索引
+    PtrL.Data[PtrL.Last + 1] = None  # 可选：清空最后一个位置
+#创建空表
 def MakeEmpty():
     return LNode()
 
