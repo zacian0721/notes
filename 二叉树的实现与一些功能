@@ -1,0 +1,81 @@
+from collections import deque
+
+class TreeNode:
+    """二叉树节点类"""
+    def __init__(self, data=None, left=None, right=None):
+        self.Data = data
+        self.Left = left
+        self.Right = right
+
+#======================== 基础操作 ========================#
+def print_leaves(root):
+    """输出所有叶子节点（先序遍历）"""
+    if root:
+        if not root.Left and not root.Right:
+            print(root.Data, end=" ")
+        print_leaves(root.Left)
+        print_leaves(root.Right)
+
+def tree_height(root):
+    """计算二叉树高度（后序遍历）"""
+    if root:
+        hl = tree_height(root.Left)
+        hr = tree_height(root.Right)
+        return max(hl, hr) + 1
+    return 0
+
+def build_tree_level_order(data_list):
+    """层序生成二叉树（输入为层序遍历列表，None表示空节点）"""
+    if not data_list or data_list[0] is None:
+        return None
+    
+    root = TreeNode(data_list[0])
+    queue = deque([root])
+    idx = 1
+    
+    while queue and idx < len(data_list):
+        current = queue.popleft()
+        
+        # 处理左子节点
+        if idx < len(data_list) and data_list[idx] is not None:
+            current.Left = TreeNode(data_list[idx])
+            queue.append(current.Left)
+        idx += 1
+        
+        # 处理右子节点
+        if idx < len(data_list) and data_list[idx] is not None:
+            current.Right = TreeNode(data_list[idx])
+            queue.append(current.Right)
+        idx += 1
+    
+    return root
+
+#======================== 使用示例 ========================#
+if __name__ == "__main__":
+    # 示例1：输出叶子节点
+    tree1 = TreeNode(1,
+                   TreeNode(2,
+                           TreeNode(4),
+                           TreeNode(5)),
+                   TreeNode(3))
+    print("叶子节点:", end=" ")
+    print_leaves(tree1)  # 输出: 4 5 3
+    
+    # 示例2：计算树高
+    print("\n树高:", tree_height(tree1))  # 输出: 3
+    
+    # 示例3：层序构建二叉树
+    data = [1, 2, 3, 4, 5, None, 6]  # None表示空节点
+    """
+    生成的树结构：
+        1
+       / \
+      2   3
+     / \   \
+    4   5   6
+    """
+    tree2 = build_tree_level_order(data)
+    
+    # 验证构建结果
+    print("\n层序构建的树的叶子节点:", end=" ")
+    print_leaves(tree2)  # 输出: 4 5 6
