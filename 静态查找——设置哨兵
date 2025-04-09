@@ -1,0 +1,44 @@
+class StaticSearchTable:
+    """静态查找表（顺序存储）"""
+    def __init__(self, max_size=100):
+        self.Element = [None] * max_size  # 存储元素的数组
+        self.length = 0                   # 当前元素个数
+        self.MAXSIZE = max_size          # 最大容量
+
+    def sequential_search(self, K):
+        """带哨兵的顺序查找
+        参数:
+            K: 要查找的元素
+        返回:
+            找到则返回索引（从1开始），未找到返回0
+        """
+        if self.length == 0:
+            return 0
+        
+        # 设置哨兵（保存原始元素）
+        original_first = self.Element[0]
+        self.Element[0] = K
+        
+        i = self.length
+        while self.Element[i] != K:
+            i -= 1
+        
+        # 恢复哨兵位置的值
+        self.Element[0] = original_first
+        
+        return i  # 如果i=0表示未找到
+
+#======================== 使用示例 ========================#
+if __name__ == "__main__":
+    # 创建查找表
+    st = StaticSearchTable(max_size=10)
+    st.Element = [None, 5, 3, 8, 2, 9]  # 元素从索引1开始存储
+    st.length = 5  # 实际元素个数
+
+    # 查找测试
+    print(st.sequential_search(8))  # 输出: 3（找到，返回位置）
+    print(st.sequential_search(4))  # 输出: 0（未找到）
+
+    # 边界测试
+    print(st.sequential_search(5))  # 输出: 1（第一个元素）
+    print(st.sequential_search(9))  # 输出: 5（最后一个元素）
