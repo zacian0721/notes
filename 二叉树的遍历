@@ -1,0 +1,74 @@
+class TreeNode:
+    """二叉树节点类"""
+    def __init__(self, data=None, left=None, right=None):
+        self.Data = data    # 节点数据
+        self.Left = left    # 左子树
+        self.Right = right  # 右子树
+
+#======================== 遍历算法 ========================#
+def pre_order_traversal(root):
+    """递归先序遍历（根->左->右）"""
+    if root:
+        print(root.Data, end=" ")  # 访问根节点
+        pre_order_traversal(root.Left)
+        pre_order_traversal(root.Right)
+
+def in_order_traversal_stack(root):
+    """非递归中序遍历（使用栈实现）"""
+    stack = []
+    current = root
+    
+    while current or stack:
+        # 遍历到最左侧节点，路径压栈
+        while current:
+            stack.append(current)
+            current = current.Left
+        
+        # 弹出栈顶并访问
+        if stack:
+            current = stack.pop()
+            print(current.Data, end=" ")
+            # 转向右子树
+            current = current.Right
+def level_order_traversal(root):
+    """层序遍历（队列实现）"""
+    if not root:
+        return []
+    
+    result = []          # 存储遍历结果
+    queue = deque([root]) # 初始化队列
+    
+    while queue:
+        node = queue.popleft()  # 队首出列
+        result.append(node.Data)
+        
+        # 将左右子节点入队
+        if node.Left:
+            queue.append(node.Left)
+        if node.Right:
+            queue.append(node.Right)
+    
+    return result
+#======================== 使用示例 ========================#
+if __name__ == "__main__":
+    # 构建二叉树：
+    #        1
+    #       / \
+    #      2   3
+    #     / \
+    #    4   5
+    n4 = TreeNode(4)
+    n5 = TreeNode(5)
+    n2 = TreeNode(2, n4, n5)
+    n3 = TreeNode(3)
+    root = TreeNode(1, n2, n3)
+
+    # 遍历测试
+    print("先序遍历（递归）:")
+    pre_order_traversal(root)  # 输出: 1 2 4 5 3
+
+    print("\n中序遍历（非递归）:")
+    in_order_traversal_stack(root)  # 输出: 4 2 5 1 3
+
+    print("层序遍历结果:", level_order_traversal(root)) 
+    # 输出: [1, 2, 3, 4, 5, 6]
