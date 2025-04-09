@@ -1,0 +1,67 @@
+class Stack:
+    """使用数组实现的栈（顺序存储）"""
+    def __init__(self, max_size=100):
+        self.MaxSize = max_size  # 栈的最大容量
+        self.Data = [None] * max_size  # 存储数据的数组
+        self.Top = -1  # 栈顶指针（空栈时为-1）
+
+    def is_empty(self):
+        """判断栈是否为空"""
+        return self.Top == -1
+
+    def is_full(self):
+        """判断栈是否已满"""
+        return self.Top == self.MaxSize - 1
+
+    def push(self, item):
+        """入栈操作"""
+        if self.is_full():
+            raise Exception("堆栈已满")  # Python推荐用异常处理错误
+        self.Top += 1
+        self.Data[self.Top] = item
+
+    def pop(self):
+        """出栈操作"""
+        if self.is_empty():
+            raise Exception("堆栈为空")
+        item = self.Data[self.Top]
+        self.Top -= 1
+        return item
+
+    def peek(self):
+        """查看栈顶元素（不出栈）"""
+        if self.is_empty():
+            raise Exception("堆栈为空")
+        return self.Data[self.Top]
+
+    def size(self):
+        """获取当前栈的大小"""
+        return self.Top + 1
+
+#======================== 使用示例 ========================#
+if __name__ == "__main__":
+    # 创建栈（默认容量100）
+    stack = Stack(max_size=5)  # 测试用小容量栈
+
+    # 入栈测试
+    for i in range(1, 6):
+        stack.push(i)
+    print(f"当前栈大小: {stack.size()}")  # 输出: 5
+
+    # 测试栈满
+    try:
+        stack.push(6)  # 触发异常
+    except Exception as e:
+        print(e)  # 输出: 堆栈已满
+
+    # 出栈测试
+    print("出栈顺序:")
+    while not stack.is_empty():
+        print(stack.pop(), end=" ")  # 输出: 5 4 3 2 1
+    print()
+
+    # 测试栈空
+    try:
+        stack.pop()  # 触发异常
+    except Exception as e:
+        print(e)  # 输出: 堆栈为空
