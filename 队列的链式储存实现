@@ -1,0 +1,86 @@
+class CircularQueue:
+    """循环队列实现（数组存储）"""
+    def __init__(self, max_size):
+        self.MaxSize = max_size + 1  # 实际多分配一个空间用于区分空/满
+        self.Data = [None] * self.MaxSize
+        self.front = 0  # 队头指针
+        self.rear = 0   # 队尾指针
+
+    def is_empty(self):
+        """判断队列是否为空"""
+        return self.front == self.rear
+
+    def is_full(self):
+        """判断队列是否已满"""
+        return (self.rear + 1) % self.MaxSize == self.front
+
+    def enqueue(self, item):
+        """入队操作"""
+        if self.is_full():
+            raise Exception("队列已满")
+        self.rear = (self.rear + 1) % self.MaxSize
+        self.Data[self.rear] = item
+
+    def dequeue(self):
+        """出队操作"""
+        if self.is_empty():
+            raise Exception("队列为空")
+        self.front = (self.front + 1) % self.MaxSize
+        return self.Data[self.front]
+
+    def peek(self):
+        """查看队首元素（不出队）"""
+        if self.is_empty():
+            raise Exception("队列为空")
+        return self.Data[(self.front + 1) % self.MaxSize]
+
+    def size(self):
+        """获取队列当前元素数量"""
+        return (self.rear - self.front + self.MaxSize) % self.MaxSize
+
+    def __str__(self):
+        """打印队列内容（调试用）"""
+        if self.is_empty():
+            return "Queue([])"
+        
+        items = []
+        i = (self.front + 1) % self.MaxSize
+        while i != (self.rear + 1) % self.MaxSize:
+            items.append(str(self.Data[i]))
+            i = (i + 1) % self.MaxSize
+        return f"Queue([{', '.join(items)}])"
+
+#======================== 使用示例 ========================#
+if __name__ == "__main__":
+    # 创建队列（容量5）
+    q = CircularQueue(max_size=5)
+
+    # 入队测试
+    for i in range(1, 6):
+        q.enqueue(i)
+    print(q)  # 输出: Queue([1, 2, 3, 4, 5])
+
+    # 测试队列满
+    try:
+        q.enqueue(6)  # 触发异常
+    except Exception as e:
+        print(e)  # 输出: 队列已满
+
+    # 出队测试
+    print("出队顺序:")
+    while not q.is_empty():
+        print(q.dequeue(), end=" ")  # 输出: 1 2 3 4 5
+    print()
+
+    # 测试队列空
+    try:
+        q.dequeue()  # 触发异常
+    except Exception as e:
+        print(e)  # 输出: 队列为空
+
+    # 循环特性测试
+    q.enqueue(10)
+    q.enqueue(20)
+    print(q.dequeue())  # 输出: 10
+    q.enqueue(30)
+    print(q)  # 输出: Queue([20, 30])
