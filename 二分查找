@@ -1,0 +1,36 @@
+def binary_search(Tbl, K):
+    """在有序表 Tbl 中查找元素 K（升序排列）
+    参数:
+        Tbl: 静态查找表对象（需包含 Element 和 Length 属性）
+        K: 目标元素
+    返回:
+        找到则返回索引（从1开始），未找到返回-1
+    """
+    left, right = 1, Tbl.Length
+    while left <= right:
+        mid = (left + right) // 2  # Python 3 整除
+        if K < Tbl.Element[mid]:
+            right = mid - 1
+        elif K > Tbl.Element[mid]:
+            left = mid + 1
+        else:
+            return mid  # 查找成功
+    return -1  # 查找失败
+
+#======================== 使用示例 ========================#
+class StaticTable:
+    def __init__(self, elements):
+        self.Element = [None] + elements  # 元素从索引1开始存储（与C一致）
+        self.Length = len(elements)
+
+if __name__ == "__main__":
+    # 创建查找表（必须是有序数组）
+    st = StaticTable([2, 4, 6, 8, 10, 12, 14])
+    
+    # 查找测试
+    print(binary_search(st, 8))   # 输出: 4（找到，返回位置）
+    print(binary_search(st, 5))   # 输出: -1（未找到）
+    
+    # 边界测试
+    print(binary_search(st, 2))   # 输出: 1（第一个元素）
+    print(binary_search(st, 14))  # 输出: 7（最后一个元素）
