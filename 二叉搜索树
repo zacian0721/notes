@@ -1,0 +1,110 @@
+class TreeNode:
+    """二叉搜索树节点类"""
+    def __init__(self, data=None, left=None, right=None):
+        self.Data = data
+        self.Left = left
+        self.Right = right
+
+#======================== 查找操作 ========================#
+def find(X, BST):
+    """查找元素X，返回节点地址"""
+    while BST:
+        if X < BST.Data:
+            BST = BST.Left
+        elif X > BST.Data:
+            BST = BST.Right
+        else:
+            return BST  # 找到
+    return None  # 未找到
+
+def find_min(BST):
+    """查找最小元素节点"""
+    if not BST:
+        return None
+    while BST.Left:
+        BST = BST.Left
+    return BST
+
+def find_max(BST):
+    """查找最大元素节点"""
+    if not BST:
+        return None
+    while BST.Right:
+        BST = BST.Right
+    return BST
+
+#======================== 插入操作 ========================#
+def insert(X, BST):
+    """插入元素X（递归实现）"""
+    if not BST:
+        return TreeNode(X)  # 创建新节点
+    
+    if X < BST.Data:
+        BST.Left = insert(X, BST.Left)
+    elif X > BST.Data:
+        BST.Right = insert(X, BST.Right)
+    # 如果X已存在，不做操作
+    
+    return BST  # 返回当前节点
+
+#======================== 删除操作 ========================#
+def delete(X, BST):
+    """删除元素X（递归实现）"""
+    if not BST:
+        print("元素未找到")
+        return None
+    
+    if X < BST.Data:
+        BST.Left = delete(X, BST.Left)
+    elif X > BST.Data:
+        BST.Right = delete(X, BST.Right)
+    else:  # 找到要删除的节点
+        # 情况1：有左右子树
+        if BST.Left and BST.Right:
+            # 用右子树的最小值替换当前节点
+            temp = find_min(BST.Right)
+            BST.Data = temp.Data
+            # 删除右子树的最小节点
+            BST.Right = delete(temp.Data, BST.Right)
+        # 情况2：单子树或叶子节点
+        else:
+            BST = BST.Left if BST.Left else BST.Right
+    
+    return BST
+
+#======================== 辅助函数 ========================#
+def print_tree_inorder(root):
+    """中序遍历打印（验证BST性质）"""
+    if root:
+        print_tree_inorder(root.Left)
+        print(root.Data, end=" ")
+        print_tree_inorder(root.Right)
+
+#======================== 使用示例 ========================#
+if __name__ == "__main__":
+    # 构建初始BST
+    #       50
+    #     /    \
+    #    30     70
+    #   /  \   /  \
+    #  20  40 60  80
+    root = None
+    for num in [50, 30, 70, 20, 40, 60, 80]:
+        root = insert(num, root)
+    
+    print("中序遍历结果:", end=" ")
+    print_tree_inorder(root)  # 输出: 20 30 40 50 60 70 80
+    
+    # 查找测试
+    print("\n查找40:", find(40, root).Data)  # 输出: 40
+    print("最小值:", find_min(root).Data)    # 输出: 20
+    print("最大值:", find_max(root).Data)    # 输出: 80
+    
+    # 删除测试
+    print("\n删除30:")
+    root = delete(30, root)
+    print_tree_inorder(root)  # 输出: 20 40 50 60 70 80
+    
+    print("\n插入35:")
+    root = insert(35, root)
+    print_tree_inorder(root)  # 输出: 20 35 40 50 60 70 80
