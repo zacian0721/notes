@@ -1,0 +1,132 @@
+class LNode:
+    """链表节点类"""
+    def __init__(self, data=None):
+        self.Data = data  # 节点数据
+        self.Next = None  # 后继指针
+
+class LinkedList:
+    """链表类（带头节点）"""
+    def __init__(self):
+        self.head = LNode()  # 头节点（哨兵节点）
+        self.length = 0     # 链表长度
+
+    #------------------ 基本操作 ------------------#
+    def is_empty(self):
+        """判断链表是否为空"""
+        return self.head.Next is None
+
+    def get_length(self):
+        """获取链表长度"""
+        return self.length
+
+    def traverse(self):
+        """遍历链表"""
+        current = self.head.Next
+        while current:
+            print(current.Data, end=" -> ")
+            current = current.Next
+        print("None")
+
+    #------------------ 查找操作 ------------------#
+    def find_by_value(self, value):
+        """按值查找（返回第一个匹配的节点）"""
+        current = self.head.Next
+        while current and current.Data != value:
+            current = current.Next
+        return current  # 找到返回节点，未找到返回None
+
+    def find_by_index(self, index):
+        """按索引查找（返回第index个节点，从0开始）"""
+        if index < 0 or index >= self.length:
+            return None
+        
+        current = self.head.Next
+        for _ in range(index):
+            current = current.Next
+        return current
+
+    #------------------ 插入操作 ------------------#
+    def insert_at_head(self, value):
+        """头插法"""
+        new_node = LNode(value)
+        new_node.Next = self.head.Next
+        self.head.Next = new_node
+        self.length += 1
+
+    def insert_at_tail(self, value):
+        """尾插法"""
+        new_node = LNode(value)
+        current = self.head
+        while current.Next:  # 找到最后一个节点
+            current = current.Next
+        current.Next = new_node
+        self.length += 1
+
+    def insert_at_index(self, index, value):
+        """在指定位置插入（索引从0开始）"""
+        if index < 0 or index > self.length:
+            raise IndexError("索引超出范围")
+        
+        if index == 0:
+            self.insert_at_head(value)
+        elif index == self.length:
+            self.insert_at_tail(value)
+        else:
+            new_node = LNode(value)
+            prev = self.head
+            for _ in range(index):  # 找到前驱节点
+                prev = prev.Next
+            new_node.Next = prev.Next
+            prev.Next = new_node
+            self.length += 1
+
+    #------------------ 删除操作 ------------------#
+    def delete_by_value(self, value):
+        """按值删除（删除第一个匹配的节点）"""
+        prev, current = self.head, self.head.Next
+        while current:
+            if current.Data == value:
+                prev.Next = current.Next
+                self.length -= 1
+                return True  # 删除成功
+            prev, current = current, current.Next
+        return False  # 未找到值
+
+    def delete_by_index(self, index):
+        """按索引删除（从0开始）"""
+        if index < 0 or index >= self.length:
+            raise IndexError("索引超出范围")
+        
+        prev = self.head
+        for _ in range(index):  # 找到前驱节点
+            prev = prev.Next
+        prev.Next = prev.Next.Next
+        self.length -= 1
+
+#======================== 使用示例 ========================#
+if __name__ == "__main__":
+    # 创建链表
+    lst = LinkedList()
+    
+    # 插入测试
+    lst.insert_at_tail(10)
+    lst.insert_at_head(5)
+    lst.insert_at_index(1, 7)
+    print("当前链表：", end="")
+    lst.traverse()  # 输出：5 -> 7 -> 10 -> None
+    
+    # 查找测试
+    print("查找值7的节点：", lst.find_by_value(7).Data)  # 输出：7
+    print("索引1的节点：", lst.find_by_index(1).Data)    # 输出：7
+    
+    # 删除测试
+    lst.delete_by_value(7)
+    lst.delete_by_index(0)
+    print("删除后链表：", end="")
+    lst.traverse()  # 输出：10 -> None
+    
+    # 异常测试
+    try:
+        lst.insert_at_index(5, 99)  # 触发IndexError
+    except IndexError as e:
+        print(f"插入异常：{e}")
